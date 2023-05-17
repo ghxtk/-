@@ -1,0 +1,99 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Software {
+protected: // Доступ внутри класса и его производным классам
+    string name; // Название
+    string manufacturer; // Производитель
+public: // Доступ извне
+    Software(string name, string manufacturer) { // Конструктор
+        this->name = name;
+        this->manufacturer = manufacturer;
+    }
+    // Вывод
+    virtual void printInfo() = 0; // Вертуальный метод переопределяется в произвлдных классах
+    // Использование
+    virtual bool isUsable() = 0; 
+};
+
+class FreeSoftware : public Software { // Доступ ко всем открытым членам класса Software
+public:
+    // Конструктор наследуется от конструктора класса Software и вызывает его с передачей параметров name и manufacturer
+    FreeSoftware(string name, string manufacturer) : Software(name, manufacturer) {}
+    
+    // Переопределение
+    void printInfo() {
+        cout << "Бесплатная программа: " << name << " от " << manufacturer << endl;
+    }
+    bool isUsable() {
+        return true;
+    }
+};
+
+class SharewareSoftware : public Software { // Доступ ко всем открытым членам класса Software
+private:
+    int day; // День
+    int freeUsageDays; // Бесплатное использование
+public:
+    SharewareSoftware(string name, string manufacturer, int day, int freeUsageDays) : Software(name, manufacturer) {
+        this->day = day;
+        this->freeUsageDays = freeUsageDays;
+    }
+    void printInfo() {
+        cout << "Условно-бесплатное программное обеспечение: " << name << " от " << manufacturer << " установлено " << day << " числа с " << freeUsageDays << " днями бесплатного использования" << endl;
+    }
+    bool isUsable() {
+        int todayDay = 30; // Сегодня 30-тое
+        int daysSinceInstallation = 30 - day; // Дней с момента установки
+        if (daysSinceInstallation > freeUsageDays) {
+            return false;
+        }
+        return true;
+    }
+};
+
+class ProprietarySoftware : public Software { // Доступ ко всем открытым членам класса Software
+private:
+    double price; // Цена 
+    int day; // День
+    int usageDays; // Срок использования
+public:
+    ProprietarySoftware(string name, string manufacturer, int day, double price, int usageDays) : Software(name, manufacturer) {
+        this->price = price;
+        this->day = day;
+        this->usageDays = usageDays;
+    }
+    void printInfo() {
+        cout << "Проприетарное программное обеспечение: " << name << " от " << manufacturer << " установлено " << day << " числа, цена: " << price << ", может использоваться " << usageDays << " дней" << endl;
+    }
+    bool isUsable() {
+        int todayDay = 30; // Сегодня 30-тое
+        int daysSinceInstallation = 30 - day; // Дней с момента установки
+        if (daysSinceInstallation > usageDays) {
+            return false;
+        }
+        return true;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "ru");
+    cout << "Сегодня 30-тое число" << endl;
+    Software* software[3]; // Динамический массив типа Software
+    software[0] = new FreeSoftware("Firefox", "Mozilla");
+    software[1] = new SharewareSoftware("WinZip", "Corel", 3, 15);
+    software[2] = new ProprietarySoftware("Photoshop", "Adobe",15, 699.99, 365);
+    
+    for (int i = 0; i < 3; i++) {
+        software[i]->printInfo();
+        if (software[i]->isUsable()) {
+            cout << "Это программное обеспечение можно использовать на текущую дату" << endl;
+        }
+        else {
+            cout << "Это программное обеспечение нельзя использовать на текущую дату" << endl;
+        }
+        cout << endl;
+    }
+    return 0;
+}
