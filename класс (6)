@@ -1,0 +1,83 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+
+class Vector{
+private: // Доступ только внутри класса
+    int x; 
+    int y;
+    static int count; // Статическая переменная пренадлежит всему классу, а не определенному экземпляру
+
+public: // Доступ извне класса
+    Vector() : x(0), y(0) { count++; }; // Конструктор
+
+    Vector(int x, int y) {  // Конструктор
+        this->x = x;
+        this->y = y;
+        count++;
+    };
+
+    void Сount() { cout << count << endl; } // Кол-во экземпляров
+
+    void print() {
+        cout << "(" << x << ", " << y << ")" << endl;
+    }
+
+    double length() { // Длина вектора
+        return sqrt(x * x + y * y);
+    }
+
+    bool equals(Vector death) { // Проверка на равенство данного вектора другому вектору, переданному в качестве аргумента
+        return x == death.x && y == death.y;
+    }
+
+    // Перегрузка сложения
+    Vector operator+(const Vector& death) {
+        return Vector(x + death.x, y + death.y); // К значению текущих объектов X и Y прибавляется значение текущего метода
+    }
+
+    // Перегрузка вычитания
+    Vector operator-(const Vector& death) {
+        return Vector(x - death.x, y - death.y); // Из значения текущего объекта X и Y вычитается значение текущего метода
+    }
+
+    // Перегрузка скалярного произведения
+    int operator*(const Vector& death) {
+        return x * death.x + y * death.y;
+    }
+
+    // Перегрузка векторного произведения
+    int operator^(const Vector& death) {
+        return x * death.y - y * death.x;
+    }
+};
+int Vector::count = 0;
+
+int main() {
+    setlocale(LC_ALL, "ru");
+    Vector v1(1, 2); // Ввод вектора 1 
+    Vector v2(3, 4); // Ввод вектора 2
+    Vector v3; // Ввод вектора 3
+
+    cout << "v1: ";  v1.print(); 
+    cout << "v2: ";  v2.print(); 
+    cout << "v3: ";  v3.print();
+    cout << "Экземпляров: "; v3.Сount();
+    Vector sum = v1 + v2; 
+    cout << "v1 + v2: "; sum.print();
+
+    Vector diff = v2 - v1;
+    cout << "v2 - v1: "; diff.print();
+
+    cout << "Скалярное произведение v1 и v2: " << v1 * v2 << endl;
+    cout << "Векторное произведение v1 и v2: " << (v1 ^ v2) << endl;
+    cout << "Длина первого вектора v2: " << v2.length() << endl;
+
+    // 1 - равен 0 - не равен 
+    cout << "v1 равен v2? " << v1.equals(v2) << endl;
+    cout << "v1 равен v1? " << v1.equals(v1) << endl;
+
+    cout << "Экземпляров: "; v1.Сount();
+    return 0;
+}
