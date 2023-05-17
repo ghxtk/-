@@ -1,0 +1,64 @@
+#include <iostream>
+#include <iomanip>
+using namespace std;
+
+template<typename T>
+void input_array(T** a, int n, int m) {
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            cin >> a[i][j];
+}
+
+template<typename T>
+void output_array(T** a, int n, int m) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++)
+            cout << a[i][j]<<" ";
+        cout << endl;
+    }
+}
+
+template<typename T>
+void snake_output(T** a, int n, int m) {
+    for (int i = 0; i < n; i++) {
+        //четная строка, то с 1 эл-та
+        if (i % 2 == 0) {
+            for (int j = 0; j < m; j++) {
+                cout << a[i][j]<<" ";
+            }
+        }
+        //нечетная строка, то с последнего
+        else {
+            for (int j = m - 1; j >= 0; j--) {
+                cout << a[i][j]<<" ";
+            }
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    int n, m; cin >> n >> m;
+    int** a = new int* [n];
+
+    for (int i = 0; i < n; i++)
+        a[i] = new int[m];
+
+    input_array(a, n, m); //ввод 
+    cout << endl;
+
+    output_array(a, n, m); //вывод
+    cout << endl;
+
+    snake_output(a, n, m); //змейка
+
+    for (int i = 0; i < n; i++)
+        delete[] a[i];
+    delete[] a;
+
+    return 0;
+}
+
+//2 3
+//1 2 3
+//4 5 6
