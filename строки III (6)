@@ -1,1 +1,29 @@
+#include <iostream>
+#include <string>
+using namespace std;
 
+int main() {
+    string s, word = ""; int n;
+    getline(cin, s); //считывание текста
+    cout << "Word of "; cin >> n; //букв в слове
+    //проходим по каждому символу из строки
+    for (char c:s) {
+        //если символ не буква
+        if (!isalpha(c)) {
+            //проверяем кол-во букв
+            if (word.length() == n) {
+                cout << word << endl;
+                word = ""; //чистим слово
+            }
+            else {
+                word = ""; 
+            }
+        }
+        else {
+            word += c; //если все же буква, то записываем символ в слово
+        }
+    }
+    return 0;
+}
+
+//Just over a year ago, we visited Belfast in Northern Irelandand the shipyard where Titanic was built.
