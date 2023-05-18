@@ -1,0 +1,43 @@
+#include <iostream>
+#include <set>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    int n; cin >> n; // Всего чисел
+    set<int> f_l, result, digits;
+
+    // добавляем цифры первого числа в f_l
+    int x; cin >> x;
+    while (x > 0) {
+        f_l.insert(x % 10);
+        x /= 10;
+    }
+
+    // добавляем цифры остальных чисел в digits
+    for (int i = 2; i < n; i++) {
+        cin >> x;
+        while (x > 0) {
+            digits.insert(x % 10);
+            x /= 10;
+        }
+    }
+
+    // добавляем цифры последнего числа в f_l
+    cin >> x;
+    while (x > 0) {
+        f_l.insert(x % 10);
+        x /= 10;
+    }
+
+    // разницы f_l и digits записываем в result
+    set_difference(f_l.begin(), f_l.end(), digits.begin(), digits.end(), inserter(result, result.begin()));
+
+    // выводим result
+    for (int digit : result) {
+        cout << digit << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
