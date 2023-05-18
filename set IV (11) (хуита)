@@ -1,0 +1,42 @@
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <algorithm>
+#include <sstream>
+using namespace std;
+
+int main() {
+    ifstream in("input.txt");
+    set<int> nums, nums2, result; // set для хранения чисел из четных строк
+    string l;
+    int cnt = 0; // счетчик строк
+
+    while (getline(in, l)) {
+        cnt++;
+        if (cnt == 2) { // если 2, то записываем её числа в nums
+            stringstream in_s(l); // строка мспользуется как поток ввода (легче преобразовать в числа)
+            int num;
+            while (in_s >> num)
+                result.insert(num);
+        }
+
+         if (cnt % 2 == 0) { // если строка четная, то записываем её числа в nums
+            stringstream in_s(l); // строка мспользуется как поток ввода (легче преобразовать в числа)
+            int num;
+            while (in_s >> num)
+                nums.insert(num);
+        }
+         
+
+        if (cnt != 2 && cnt % 2 == 0)
+            set_intersection(result.begin(), result.end(), nums.begin(), nums.end(), inserter(result, result.begin()));
+        nums.clear();
+
+    
+    }
+
+    for (int x : result)
+        cout << x << " ";
+
+    return 0;
+}
