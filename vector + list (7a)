@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> v; // Вектор
+    vector<int>::iterator iter; // Итератор для перебора эл-тов
+    int n, x; cout << "Size: "; cin >> n; // Кол-во эл-тов
+
+    for (int i = 0; i < n; i++) {
+        cin >> x;
+        v.push_back(x); // Добавление эл-та в конец вектора
+    }
+    
+    iter = v.begin(); // Возвращает итератор, указывающий на первый э-т
+    swap(v[1], v[n - 2]); // Меняем два эл-та местами
+
+    for (int i = 0; i < v.size(); i++)
+        cout << v[i] << " ";
+
+    return 0;
+}
+
+//Временная сложность: O(1) - обращение к элементам вектора происходит за константное время
