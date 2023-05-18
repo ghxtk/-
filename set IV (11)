@@ -13,26 +13,27 @@ int main() {
 
     while (getline(in, l)) {
         cnt++;
-        if (cnt == 2) { // если 2, то записываем её числа в nums
+        if (cnt == 2) { // если вторая строка, то записываем её числа в result
             stringstream in_s(l); // строка мспользуется как поток ввода (легче преобразовать в числа)
             int num;
             while (in_s >> num)
                 result.insert(num);
         }
 
-         if (cnt % 2 == 0) { // если строка четная, то записываем её числа в nums
-            stringstream in_s(l); // строка мспользуется как поток ввода (легче преобразовать в числа)
+        if (cnt % 2 == 0) { // если строка четная, то записываем её числа в nums
+            stringstream in_s(l);
             int num;
             while (in_s >> num)
                 nums.insert(num);
         }
-         
 
-        if (cnt != 2 && cnt % 2 == 0)
-            set_intersection(result.begin(), result.end(), nums.begin(), nums.end(), inserter(result, result.begin()));
+        if (cnt != 2 && cnt % 2 == 0) {
+            //пересечение result и nums записывается в nums2
+            set_intersection(result.begin(), result.end(), nums.begin(), nums.end(), inserter(nums2, nums2.begin()));
+            result = nums2; // копируем результат из nums2 в result
+            nums2.clear(); // очищаем временное множество
+        }
         nums.clear();
-
-    
     }
 
     for (int x : result)
