@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <functional>
+using namespace std;
+
+bool compare_a(pair<int, int> x) {
+	return x.second > 0; // вторая переменная в паре (в нашем случае значение y)
+}
+
+int main() {
+	setlocale(LC_ALL, "Rus");
+	vector <pair<int, int>> point; //вектор для хранения пар точек
+	int n; cout << "Введите количество точек: "; cin >> n;
+	for (int i = 0; i < n; i++) {
+		int x, y;
+		cin >> x >> y;
+		point.push_back(make_pair(x, y)); //записываем в конец попарно
+	}
+
+	//a
+	//erase - удаление; remove_if - удаление по условию
+	//remove_if не удаляет эл-ты, а перемещает их в конец и возвращает итератор на первый эл-т, который нужно удалить
+	point.erase(remove_if(point.begin(), point.end(), compare_a));
+	cout << "После удаления точек, лежищих в верхней половине системы координат:" << endl;
+	for (unsigned int i = 0; i < point.size(); i++)
+		cout << point[i].first << ' ' << point[i].second << endl;
+
+	//b
+	cout << "Введите координаты точки:" << endl;
+	int x, y; cin >> x >> y;
+	//count_if - возвращает кол-во по заданному условию 
+	auto b = count_if(point.begin(), point.end(), [&](const pair<int, int>& p) {
+		return p.first >= x && p.second >= y; });
+	cout << "Количество точек, лежащих правее и выше заданной = " << b << endl;
+
+	//c
+	cout << "Расстояние от начала координат: " << endl;
+	int r; cin >> r;
+	//find_if - первое вхождение по условию; any_of - true если хоть раз условие выполнилось
+	//auto - определяет нужный тип автоматически
+	auto c = find_if(point.begin(), point.end(), [&](const pair<int, int>& p) {
+		return p.first * p.first + p.second * p.second >= r * r; });
+	if (!any_of(point.begin(), point.end(), [&](const pair<int, int>& p) {
+		return p.first * p.first + p.second * p.second >= r * r; }))
+		cout << "Точки не найдены" << endl;
+	else
+		for (auto p : point)
+			if (p == *c)
+				cout << "Первая точка, удаленная от начала коодинат не менее чем на " << r << " : " << p.first << " " << p.second << endl;
+
+	//d
+	vector<int> sum; //вектор для суммы координат
+	for (auto p : point)
+		sum.push_back(p.first + p.second); //записываем в него сумму
+	sort(sum.begin(), sum.end(),greater<>()); //greater - по убыванию
+	cout << "Сумма координат в порядке убывания: ";
+	for (auto p : sum)
+		cout << p << " ";
+
+	return 0;
+}
+// 4; 2 -2 8 12 -6 -8 9 -8; -4 -4; 10
