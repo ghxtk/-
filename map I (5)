@@ -1,0 +1,25 @@
+#include <iostream>
+#include <map>
+#include <fstream>
+using namespace std;
+
+ifstream in("input.txt");
+
+int main() {
+	map<string, int> num_count; 
+	string s; int k; cin >> k; // столько раз встречается число
+
+	//считывание чисел и подсчет кол-ва
+	while (in >> s) {
+		if (isdigit(s[0]))
+			num_count[s]++;
+	}
+
+	// вывод элементов встречающихся ровно k раз
+	for (auto i = num_count.begin(); i!=num_count.end();i++)
+		if(i->second == k)
+			cout << i->first << endl;
+	return 0;
+}
+
+word 123 word 67 word 123 123
