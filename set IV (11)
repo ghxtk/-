@@ -1,23 +1,26 @@
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <set>
+#include <unordered_set>
 #include <fstream>
 using namespace std;
 
 int main() {
     ifstream in("input.txt");
     string line;
-    while (getline(in, line)) {  // читаем строки из входного потока
-        set<int> numbers;  // создаем set для хранения чисел
-        stringstream ss(line);  // создаем поток для чтения чисел из строки
-        int number;
-        while (ss >> number) {  // читаем числа из строки
-            numbers.insert(number);  // добавляем числа в set
+    while (getline(in, line)) { // читаем строки из входного потока
+        stringstream iss(line); // создаем поток для чтения чисел из строки
+        unordered_set<int> numbers; // создаем set для хранения чисел
+        int num;
+        while (iss >> num) { // читаем числа из строки
+            if (numbers.count(num)) { // если такого эл-та больше 0
+                numbers.erase(num); // удаляем этот эл-т из сета
+            }
+            else {
+                numbers.insert(num); // иначе добавляем в сет
+            }
         }
-        // выводим все различные числа в строке
-        for (int number : numbers) {
-            cout << number << " ";
+        for (int num : numbers) {
+            cout << num << " ";
         }
         cout << endl;
     }
