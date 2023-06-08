@@ -1,43 +1,25 @@
 #include <iostream>
-#include <fstream>
-#include <set>
-#include <algorithm>
+#include <string>
 #include <sstream>
+#include <set>
+#include <fstream>
 using namespace std;
 
 int main() {
     ifstream in("input.txt");
-    set<int> nums, nums2, result; // set для хранения чисел из четных строк
-    string l;
-    int cnt = 0; // счетчик строк
-
-    while (getline(in, l)) {
-        cnt++;
-        if (cnt == 2) { // если вторая строка, то записываем её числа в result
-            stringstream in_s(l); // строка мспользуется как поток ввода (легче преобразовать в числа)
-            int num;
-            while (in_s >> num)
-                result.insert(num);
+    string line;
+    while (getline(in, line)) {  // читаем строки из входного потока
+        set<int> numbers;  // создаем set для хранения чисел
+        stringstream ss(line);  // создаем поток для чтения чисел из строки
+        int number;
+        while (ss >> number) {  // читаем числа из строки
+            numbers.insert(number);  // добавляем числа в set
         }
-
-        if (cnt % 2 == 0) { // если строка четная, то записываем её числа в nums
-            stringstream in_s(l);
-            int num;
-            while (in_s >> num)
-                nums.insert(num);
+        // выводим все различные числа в строке
+        for (int number : numbers) {
+            cout << number << " ";
         }
-
-        if (cnt != 2 && cnt % 2 == 0) {
-            //пересечение result и nums записывается в nums2
-            set_intersection(result.begin(), result.end(), nums.begin(), nums.end(), inserter(nums2, nums2.begin()));
-            result = nums2; // копируем результат из nums2 в result
-            nums2.clear(); // очищаем временное множество
-        }
-        nums.clear();
+        cout << endl;
     }
-
-    for (int x : result)
-        cout << x << " ";
-
     return 0;
 }
